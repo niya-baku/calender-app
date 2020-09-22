@@ -1,6 +1,7 @@
 import { Schedule, ScheduleSharp } from "@material-ui/icons"
 import { isSameDay } from "./calendar";
 import dayjs from "dayjs";
+import { schedulesDeleteItem } from "../redux/schedules/actions";
 
 export const formatSchedule = schedule => ({
   ...schedule,
@@ -11,4 +12,12 @@ export const setSchedules = (calendar, schedules) =>
   calendar.map(c => ({
     date: c,
     schedules: schedules.filter(e => isSameDay(e.date, c))
-  }));
+}));
+
+export const isCloseDialog = schedule => {
+  const message = "保存されていない変更を破棄しますか？";
+  return isScheduleEmpty(schedule) || window.confirm(message);
+};
+
+const isScheduleEmpty = schedule =>
+  !schedule.title && !schedule.description && !schedule.location;
